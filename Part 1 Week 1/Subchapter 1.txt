@@ -1,0 +1,6 @@
+Python 3 Specialization, Part 1
+
+Week 1 
+
+Subchapter Welcome to Python
+Subchapter Programming in Python
