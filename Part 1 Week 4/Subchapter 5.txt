@@ -1,12 +1,24 @@
-Python 3 Specialization, Part 1  
+   
+#part 3 Last Assignment
+   
+   
+   import requests_with_caching
+    import json
+    # some invocations that we use in the automated tests; uncomment these if you are getting errors and want better error messages
+    # get_movies_from_tastedive("Bridesmaids")
 
-Week 4    
+    def get_movies_from_tastedive(str_input):
+        page = requests_with_caching.get(
+            "https://tastedive.com/api/similar",
+            params={"q": str_input, "type": "movies", "limit": 5})
+        py_rec = json.loads(page.text)
+        return py_rec
 
-Subchapter Python Basics Final Course Assignment  
-
-
-part 3 Assignment
-
+    def extract_movie_titles(dict_input):
+        names_lst = []
+        for nam in dict_input["Similar"]["Results"]:
+            names_lst.append(nam["Name"])
+        return names_lst[:5]
 
     def get_related_titles(lst_movies):
         ret_lst = []
@@ -21,22 +33,16 @@ part 3 Assignment
         return ret_lst
 
     # extract_movie_titles(get_movies_from_tastedive("Black Panther"))
-    
-    
-    def get_movies_from_tastedive(str_input):
-        page = requests_with_caching.get(
-            "https://tastedive.com/api/similar",
-            params={"q": str_input, "type": "movies", "limit": 5})
+
+
+
+    def get_movie_data(str_input):
+        page = requests_with_caching.get("http://www.omdbapi.com/",
+                                         params={"t": str_input,
+                                                 "r": "json"})
         py_rec = json.loads(page.text)
         return py_rec
 
-    def extract_movie_titles(dict_input):
-        names_lst = []
-        for nam in dict_input["Similar"]["Results"]:
-            names_lst.append(nam["Name"])
-        return names_lst[:5]
-        
-        
     def get_movie_rating(dict_input):
         rating = 0
 
@@ -48,17 +54,6 @@ part 3 Assignment
             return 0
 
     # get_movie_rating(get_movie_data("Deadpool 2"))
-    
-    
-
-    def get_movie_data(str_input):
-        page = requests_with_caching.get("http://www.omdbapi.com/",
-                                         params={"t": str_input,
-                                                 "r": "json"})
-        py_rec = json.loads(page.text)
-        return py_rec
-
-
 
     def get_sorted_recommendations(lst_movie_titles):
         # first with one title
