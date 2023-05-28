@@ -3,3 +3,87 @@ Python 3 Specialization, Part 1
 Week 4    
 
 Subchapter Python Basics Final Course Assignment  
+
+
+part 3 Assignment
+    def get_movies_from_tastedive(str_input):
+        page = requests_with_caching.get(
+            "https://tastedive.com/api/similar",
+            params={"q": str_input, "type": "movies", "limit": 5})
+        py_rec = json.loads(page.text)
+        return py_rec
+
+    def extract_movie_titles(dict_input):
+        names_lst = []
+        for nam in dict_input["Similar"]["Results"]:
+            names_lst.append(nam["Name"])
+        return names_lst[:5]
+
+    def get_related_titles(lst_movies):
+        ret_lst = []
+        extracted_lst = []
+        for item in lst_movies:
+            extracted_lst = extract_movie_titles(
+                get_movies_from_tastedive(item))
+            for movie in extracted_lst:
+                if movie not in ret_lst:
+                    ret_lst.append(movie)
+
+        return ret_lst
+
+    # extract_movie_titles(get_movies_from_tastedive("Black Panther"))
+
+
+
+    def get_movie_data(str_input):
+        page = requests_with_caching.get("http://www.omdbapi.com/",
+                                         params={"t": str_input,
+                                                 "r": "json"})
+        py_rec = json.loads(page.text)
+        return py_rec
+
+    def get_movie_rating(dict_input):
+        rating = 0
+
+        for counter in range(len(dict_input['Ratings'])):
+            if dict_input['Ratings'][counter][
+                "Source"] == "Rotten Tomatoes":
+                return int(dict_input['Ratings'][1]["Value"][0:2])
+        else:
+            return 0
+
+    # get_movie_rating(get_movie_data("Deadpool 2"))
+
+    def get_sorted_recommendations(lst_movie_titles):
+        # first with one title
+
+        lst_first_output = get_related_titles(lst_movie_titles)
+
+        lst_title_and_rating = []
+        for item in lst_first_output:
+            lst_title_and_rating.append(
+                [item, get_movie_rating(get_movie_data(item))])
+
+        print("--")
+        print(lst_title_and_rating)
+        # returns a list of related movies as output,
+
+        lst_sorted_1 = []
+        lst_sorted_2 = []
+
+        lst_sorted_1 = sorted(lst_title_and_rating, key=(lambda k: -k[1]),
+                              reverse=True)
+
+        for counter in range(len(lst_sorted_1)):
+            lst_sorted_2.append(
+                lst_sorted_1[(-counter + len(lst_sorted_1) - 1)])
+        print(lst_sorted_2)
+
+        lst_only_Titles = []
+
+        for movie in lst_sorted_2:
+            lst_only_Titles.append(movie[0])
+
+        return lst_only_Titles
+
+    get_sorted_recommendations(["Bridesmaids", "Sherlock Holmes"])
