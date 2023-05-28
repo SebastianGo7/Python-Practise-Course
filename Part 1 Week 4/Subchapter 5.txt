@@ -35,15 +35,8 @@ part 3 Assignment
         for nam in dict_input["Similar"]["Results"]:
             names_lst.append(nam["Name"])
         return names_lst[:5]
-
-
-    def get_movie_data(str_input):
-        page = requests_with_caching.get("http://www.omdbapi.com/",
-                                         params={"t": str_input,
-                                                 "r": "json"})
-        py_rec = json.loads(page.text)
-        return py_rec
-
+        
+        
     def get_movie_rating(dict_input):
         rating = 0
 
@@ -55,6 +48,17 @@ part 3 Assignment
             return 0
 
     # get_movie_rating(get_movie_data("Deadpool 2"))
+    
+    
+
+    def get_movie_data(str_input):
+        page = requests_with_caching.get("http://www.omdbapi.com/",
+                                         params={"t": str_input,
+                                                 "r": "json"})
+        py_rec = json.loads(page.text)
+        return py_rec
+
+
 
     def get_sorted_recommendations(lst_movie_titles):
         # first with one title
