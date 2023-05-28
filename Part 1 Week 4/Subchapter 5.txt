@@ -6,18 +6,7 @@ Subchapter Python Basics Final Course Assignment
 
 
 part 3 Assignment
-    def get_movies_from_tastedive(str_input):
-        page = requests_with_caching.get(
-            "https://tastedive.com/api/similar",
-            params={"q": str_input, "type": "movies", "limit": 5})
-        py_rec = json.loads(page.text)
-        return py_rec
 
-    def extract_movie_titles(dict_input):
-        names_lst = []
-        for nam in dict_input["Similar"]["Results"]:
-            names_lst.append(nam["Name"])
-        return names_lst[:5]
 
     def get_related_titles(lst_movies):
         ret_lst = []
@@ -32,7 +21,20 @@ part 3 Assignment
         return ret_lst
 
     # extract_movie_titles(get_movies_from_tastedive("Black Panther"))
+    
+    
+    def get_movies_from_tastedive(str_input):
+        page = requests_with_caching.get(
+            "https://tastedive.com/api/similar",
+            params={"q": str_input, "type": "movies", "limit": 5})
+        py_rec = json.loads(page.text)
+        return py_rec
 
+    def extract_movie_titles(dict_input):
+        names_lst = []
+        for nam in dict_input["Similar"]["Results"]:
+            names_lst.append(nam["Name"])
+        return names_lst[:5]
 
 
     def get_movie_data(str_input):
