@@ -1,5 +1,0 @@
-Python 3 Specialization, Part 1
-
-Week 4 
-
-Subchapter Sequence Mutation
